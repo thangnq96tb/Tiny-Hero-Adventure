@@ -5953,9 +5953,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1968056243}
   - component: {fileID: 1968056242}
-  - component: {fileID: 1968056244}
   - component: {fileID: 1968056245}
   - component: {fileID: 1968056246}
+  - component: {fileID: 1968056244}
+  - component: {fileID: 1968056247}
   m_Layer: 0
   m_Name: SCR_Player
   m_TagString: Untagged
@@ -6042,7 +6043,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d48e619526ec21c42bb8925b8196b40c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MoveSpeed: 5
+  m_MoveSpeed: 500
+  m_JumpForce: 500
 --- !u!50 &1968056245
 Rigidbody2D:
   serializedVersion: 4
@@ -6090,6 +6092,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.4517028, y: 1.7726573}
   m_EdgeRadius: 0
+--- !u!95 &1968056247
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1968056241}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f917c663bf03b63469b26f543b49db9a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2032439778
 GameObject:
   m_ObjectHideFlags: 0
