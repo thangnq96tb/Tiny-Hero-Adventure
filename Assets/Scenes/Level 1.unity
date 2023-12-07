@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 510636423}
   - component: {fileID: 510636422}
   - component: {fileID: 510636421}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6045,6 +6045,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MoveSpeed: 500
   m_JumpForce: 500
+  m_JumpableGround:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!50 &1968056245
 Rigidbody2D:
   serializedVersion: 4

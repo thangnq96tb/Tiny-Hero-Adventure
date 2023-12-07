@@ -5,11 +5,13 @@ using UnityEngine;
 public class SCR_Player : MonoBehaviour
 {
     [SerializeField] float m_MoveSpeed = 500f;
-    [SerializeField] float m_JumpForce = 300f;
+    [SerializeField] float m_JumpForce = 500f;
+    [SerializeField] LayerMask m_JumpableGround;
 
     private Rigidbody2D player;
     private Animator anim;
-    private SpriteRenderer sprite; 
+    private SpriteRenderer sprite;
+    private BoxCollider2D boxCollider2D;
     private float dirX = 0f;
     private MovementState m_CurrentState = MovementState.IDLE;
 
@@ -27,6 +29,7 @@ public class SCR_Player : MonoBehaviour
         player = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
+        boxCollider2D = GetComponent<BoxCollider2D>();
     }
 
     // Update is called once per frame
@@ -35,7 +38,7 @@ public class SCR_Player : MonoBehaviour
         dirX = Input.GetAxisRaw("Horizontal");
         player.velocity = new Vector2(dirX * m_MoveSpeed * Time.deltaTime, player.velocity.y);
 
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {
             player.velocity = new Vector2(player.velocity.x, m_JumpForce * Time.deltaTime);
         }
@@ -70,5 +73,11 @@ public class SCR_Player : MonoBehaviour
 
         anim.SetInteger("state", (int)m_CurrentState);
         Debug.Log($"Player state: {m_CurrentState.ToString()}: ");
+    }    
+
+    private bool IsGrounded()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, boxCollider2D.size.y, m_JumpableGround);
+        return hit.collider != null;
     }    
 }
