@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class SCR_Player : MonoBehaviour
 {
-    [SerializeField] float m_MoveSpeed = 500f;
-    [SerializeField] float m_JumpForce = 500f;
+    [SerializeField] float m_MoveSpeed = 5f;
+    [SerializeField] float m_JumpForce = 5f;
+    [SerializeField] float m_Health = 10f;
+
+    [SerializeField] TextMeshProUGUI m_HealthTXT;
     [SerializeField] LayerMask m_JumpableGround;
 
     private Rigidbody2D player;
@@ -30,17 +34,19 @@ public class SCR_Player : MonoBehaviour
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         boxCollider2D = GetComponent<BoxCollider2D>();
+
+        UpdateHealthInfo();
     }
 
     // Update is called once per frame
     void Update()
     {
         dirX = Input.GetAxisRaw("Horizontal");
-        player.velocity = new Vector2(dirX * m_MoveSpeed * Time.deltaTime, player.velocity.y);
+        player.velocity = new Vector2(dirX * m_MoveSpeed, player.velocity.y);
 
         if(Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {
-            player.velocity = new Vector2(player.velocity.x, m_JumpForce * Time.deltaTime);
+            player.velocity = new Vector2(player.velocity.x, m_JumpForce);
         }
         UpdateAnimationState();
     }
@@ -80,4 +86,22 @@ public class SCR_Player : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, boxCollider2D.size.y, m_JumpableGround);
         return hit.collider != null;
     }    
+
+    public void TakeDamage(float damage)
+    {
+        m_Health -= damage;
+        UpdateHealthInfo();
+    }
+
+    public void Heal(float health)
+    {
+        m_Health += health;
+        UpdateHealthInfo();
+    }
+
+    public void UpdateHealthInfo()
+    {
+        m_HealthTXT.text = $"HP: {m_Health}"; 
+    }    
 }
+ 
