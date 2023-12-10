@@ -1,3 +1,4 @@
+using TinyHero;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -12,7 +13,9 @@ public class SCR_Player : MonoBehaviour
     [SerializeField] TextMeshProUGUI m_HealthTXT;
     [SerializeField] LayerMask m_JumpableGround;
 
-    private Rigidbody2D player;
+
+    protected Player m_Player;
+    private Rigidbody2D playerRB;
     private Animator anim;
     private SpriteRenderer sprite;
     private BoxCollider2D boxCollider2D;
@@ -30,11 +33,11 @@ public class SCR_Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = GetComponent<Rigidbody2D>();
+        playerRB = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         boxCollider2D = GetComponent<BoxCollider2D>();
-
+        m_Player = new Player();
         UpdateHealthInfo();
     }
 
@@ -42,13 +45,18 @@ public class SCR_Player : MonoBehaviour
     void Update()
     {
         dirX = Input.GetAxisRaw("Horizontal");
-        player.velocity = new Vector2(dirX * m_MoveSpeed, player.velocity.y);
+        playerRB.velocity = new Vector2(dirX * m_MoveSpeed, playerRB.velocity.y);
 
         if(Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {
-            player.velocity = new Vector2(player.velocity.x, m_JumpForce);
+            playerRB.velocity = new Vector2(playerRB.velocity.x, m_JumpForce);
         }
         UpdateAnimationState();
+
+        if(m_Health <= 0f)
+        {
+            Die();
+        }    
     }
 
     void UpdateAnimationState()
@@ -68,11 +76,11 @@ public class SCR_Player : MonoBehaviour
             m_CurrentState = MovementState.IDLE;
         }    
 
-        if(player.velocity.y > 0.1f)
+        if(playerRB.velocity.y > 0.1f)
         {
             m_CurrentState = MovementState.JUMP;
         }     
-        else if(player.velocity.y < -0.1f)
+        else if(playerRB.velocity.y < -0.1f)
         {
             m_CurrentState = MovementState.FALL;
         }
@@ -103,5 +111,11 @@ public class SCR_Player : MonoBehaviour
     {
         m_HealthTXT.text = $"HP: {m_Health}"; 
     }    
+
+    public void Die()
+    {
+        Instantiate(m_Player.GetDieVfx(), transform.position, Quaternion.identity);
+        gameObject.SetActive(false);
+    }
 }
  
